@@ -1,0 +1,20 @@
+REQUEST: GET http://localhost:9877/stocks
+TIME: 2025-05-12 19:53:21
+STATUS: 200
+RESPONSE TIME: 0.076 seconds
+
+RESPONSE BODY:
+{
+    "stocks": {
+        "Advanced Micro Devices, Inc.": "AMD",
+        "Alphabet Inc. Class A": "GOOGL",
+        "Alphabet Inc. Class C": "GOOG",
+        "Amazon.com, Inc.": "AMZN",
+        "Amgen Inc.": "AMGN",
+        "Apple Inc.": "AAPL",
+        "Cisco Systems, Inc.": "CSCO",
+        "Meta Platforms Inc.": "META",
+        "Microsoft Corporation": "MSFT",
+        "NVIDIA Corporation": "NVDA"
+    }
+}

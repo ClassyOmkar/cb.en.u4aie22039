@@ -1,0 +1,10 @@
+REQUEST: GET http://localhost:9876/
+TIME: 2025-05-12 19:53:21
+STATUS: 200
+RESPONSE TIME: 0.098 seconds
+
+RESPONSE BODY:
+{
+    "status": "healthy",
+    "service": "Average Calculator"
+}

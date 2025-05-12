@@ -1,0 +1,10 @@
+REQUEST: GET http://localhost:9877/
+TIME: 2025-05-12 19:53:21
+STATUS: 200
+RESPONSE TIME: 0.148 seconds
+
+RESPONSE BODY:
+{
+    "status": "healthy",
+    "service": "Stock Price Aggregation"
+}

@@ -1,0 +1,50 @@
+REQUEST: GET http://localhost:9876/numbers/f
+TIME: 2025-05-12 19:53:21
+STATUS: 200
+RESPONSE TIME: 0.17 seconds
+
+RESPONSE BODY:
+{
+    "windowPrevState": [
+        5,
+        8,
+        13,
+        21,
+        34,
+        55,
+        144,
+        233,
+        377,
+        610
+    ],
+    "windowCurrState": [
+        5,
+        8,
+        13,
+        21,
+        34,
+        55,
+        144,
+        233,
+        377,
+        610
+    ],
+    "numbers": [
+        1,
+        1,
+        2,
+        3,
+        5,
+        8,
+        13,
+        21,
+        34,
+        55,
+        89,
+        144,
+        233,
+        377,
+        610
+    ],
+    "avg": 150.0
+}

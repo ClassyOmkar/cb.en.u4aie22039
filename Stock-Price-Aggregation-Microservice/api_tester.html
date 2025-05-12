@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Price Aggregation API Tester</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .endpoint-container {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+        }
+        .endpoint-title {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .endpoint-description {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+        .endpoint-url {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 3px;
+            font-family: monospace;
+            margin-bottom: 15px;
+            word-break: break-all;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .response-container {
+            margin-top: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 10px;
+            display: none;
+        }
+        .response-details {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        .response-status {
+            font-weight: bold;
+        }
+        .response-time {
+            font-style: italic;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+            font-family: monospace;
+            font-size: 13px;
+        }
+        .error {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Stock Price Aggregation API Tester</h1>
+        
+        <div class="endpoint-container">
+            <h2 class="endpoint-title">Health Check</h2>
+            <p class="endpoint-description">Check if the API is running properly.</p>
+            <div class="endpoint-url">GET http://localhost:9877/</div>
+            <button onclick="testEndpoint('health', '/')">Test Endpoint</button>
+            <div id="health-response" class="response-container">
+                <div class="response-details">
+                    <span class="response-status" id="health-status"></span>
+                    <span class="response-time" id="health-time"></span>
+                </div>
+                <pre id="health-body"></pre>
+            </div>
+        </div>
+        
+        <div class="endpoint-container">
+            <h2 class="endpoint-title">List Stocks</h2>
+            <p class="endpoint-description">Get a list of all available stocks on the exchange.</p>
+            <div class="endpoint-url">GET http://localhost:9877/stocks</div>
+            <button onclick="testEndpoint('stocks', '/stocks')">Test Endpoint</button>
+            <div id="stocks-response" class="response-container">
+                <div class="response-details">
+                    <span class="response-status" id="stocks-status"></span>
+                    <span class="response-time" id="stocks-time"></span>
+                </div>
+                <pre id="stocks-body"></pre>
+            </div>
+        </div>
+        
+        <div class="endpoint-container">
+            <h2 class="endpoint-title">Stock Average Price</h2>
+            <p class="endpoint-description">Get the average price of a stock over a specified time window.</p>
+            <div class="endpoint-url">GET http://localhost:9877/stocks/AAPL?minutes=30&aggregation=average</div>
+            <button onclick="testEndpoint('average', '/stocks/AAPL?minutes=30&aggregation=average')">Test Endpoint</button>
+            <div id="average-response" class="response-container">
+                <div class="response-details">
+                    <span class="response-status" id="average-status"></span>
+                    <span class="response-time" id="average-time"></span>
+                </div>
+                <pre id="average-body"></pre>
+            </div>
+        </div>
+        
+        <div class="endpoint-container">
+            <h2 class="endpoint-title">Stock Correlation</h2>
+            <p class="endpoint-description">Calculate correlation between two stocks over a specified time window.</p>
+            <div class="endpoint-url">GET http://localhost:9877/stocks/correlation?minutes=30&ticker=AAPL&ticker=MSFT</div>
+            <button onclick="testEndpoint('correlation', '/stocks/correlation?minutes=30&ticker=AAPL&ticker=MSFT')">Test Endpoint</button>
+            <div id="correlation-response" class="response-container">
+                <div class="response-details">
+                    <span class="response-status" id="correlation-status"></span>
+                    <span class="response-time" id="correlation-time"></span>
+                </div>
+                <pre id="correlation-body"></pre>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        async function testEndpoint(id, endpoint) {
+            const baseUrl = 'http://localhost:9877';
+            const url = baseUrl + endpoint;
+            
+            const responseContainer = document.getElementById(`${id}-response`);
+            const statusElement = document.getElementById(`${id}-status`);
+            const timeElement = document.getElementById(`${id}-time`);
+            const bodyElement = document.getElementById(`${id}-body`);
+            
+            responseContainer.style.display = 'block';
+            statusElement.innerHTML = 'Loading...';
+            timeElement.innerHTML = '';
+            bodyElement.innerHTML = '';
+            
+            try {
+                const startTime = performance.now();
+                const response = await fetch(url);
+                const endTime = performance.now();
+                const responseTime = (endTime - startTime).toFixed(2);
+                
+                // Set response details
+                statusElement.innerHTML = `Status: ${response.status} ${response.statusText}`;
+                timeElement.innerHTML = `Response Time: ${responseTime}ms`;
+                
+                try {
+                    const data = await response.json();
+                    bodyElement.innerHTML = JSON.stringify(data, null, 2);
+                } catch (jsonError) {
+                    const text = await response.text();
+                    bodyElement.innerHTML = text;
+                }
+            } catch (error) {
+                statusElement.innerHTML = 'Error';
+                bodyElement.innerHTML = `<span class="error">Failed to fetch: ${error.message}. Make sure the server is running at ${baseUrl}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>
